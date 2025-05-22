@@ -62,40 +62,85 @@ java -jar target/receitasfaceis-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 ## Estrutura do Projeto
 
-```
-/src
-  /main
-    /java
-      /com/receitasfaceis
-        /config         # Configurações do sistema
-        /controller     # Controladores REST
-        /dao            # Acesso a dados
-        /model          # Modelos de dados
-        /service        # Regras de negócio
-        /util           # Classes utilitárias
-        Application.java # Classe principal
-    /resources
-      /public           # Arquivos estáticos (HTML, CSS, JS)
-      /sql              # Scripts SQL
-```
+O projeto está organizado em duas pastas principais:
+
+- **backend**: Contém todo o código Java da aplicação, incluindo a API REST e a camada de acesso a dados.
+- **frontend**: Contém todos os arquivos da interface web (HTML, CSS e JavaScript).
+
+## Iniciando o Projeto
+
+### Backend
+
+1. Entre na pasta backend:
+   ```
+   cd backend
+   ```
+
+2. Compile e execute o projeto usando Maven:
+   ```
+   mvn clean compile exec:java
+   ```
+
+### Frontend
+
+O frontend é servido pelo backend automaticamente quando o servidor Spark é iniciado.
+A pasta frontend contém os arquivos estáticos da interface web que são acessados diretamente pelo navegador.
 
 ## API REST
 
-### Usuários
-- `GET /api/usuarios` - Lista todos os usuários
-- `GET /api/usuarios/:id` - Busca usuário por ID
-- `POST /api/usuarios` - Cria um novo usuário
-- `PUT /api/usuarios/:id` - Atualiza um usuário existente
-- `DELETE /api/usuarios/:id` - Remove um usuário
-- `POST /api/usuarios/login` - Autentica um usuário
+A API está disponível em `http://localhost:8080/api` e oferece os seguintes endpoints:
 
-### Receitas
-- `GET /api/receitas` - Lista todas as receitas
-- `GET /api/receitas/:id` - Busca receita por ID
-- `POST /api/receitas` - Cria uma nova receita
-- `PUT /api/receitas/:id` - Atualiza uma receita existente
-- `DELETE /api/receitas/:id` - Remove uma receita
-- `GET /api/receitas/busca/ingredientes?ids=1,2,3` - Busca receitas por ingredientes disponíveis
+- **Usuários**: `/api/usuarios`
+  - GET: Lista todos os usuários
+  - POST: Cria um novo usuário
+  - GET `/:id`: Busca um usuário pelo ID
+  - PUT `/:id`: Atualiza um usuário
+  - DELETE `/:id`: Remove um usuário
+  - POST `/login`: Autentica um usuário
+
+- **Receitas**: `/api/receitas`
+  - GET: Lista todas as receitas
+  - POST: Cria uma nova receita
+  - GET `/:id`: Busca uma receita pelo ID
+  - PUT `/:id`: Atualiza uma receita
+  - DELETE `/:id`: Remove uma receita
+  - GET `/busca/ingredientes`: Busca receitas por ingredientes
+
+## Páginas Implementadas
+
+O projeto contém as seguintes páginas:
+
+1. **Página Inicial (index.html)**
+   - Página inicial com apresentação do sistema e receitas em destaque.
+
+2. **Lista de Receitas (receitas.html)**
+   - Exibe todas as receitas disponíveis com opções de filtro por categoria e dificuldade.
+
+3. **Detalhes da Receita (receita-detalhes.html)**
+   - Mostra informações completas de uma receita específica, incluindo ingredientes e modo de preparo.
+
+4. **Nova Receita (nova-receita.html)**
+   - Formulário para cadastro de novas receitas (requer autenticação).
+
+5. **Cadastro (cadastro.html)**
+   - Página para criação de novas contas de usuário.
+
+6. **Login (login.html)**
+   - Página para autenticação de usuários.
+
+## Recursos Implementados
+
+1. **Listagem de Receitas**
+   - Visualização de todas as receitas cadastradas com filtros por categoria e dificuldade.
+
+2. **Visualização Detalhada**
+   - Página com detalhes completos de cada receita, incluindo ingredientes e modo de preparo.
+
+3. **Cadastro de Receitas**
+   - Formulário para usuários logados adicionarem novas receitas ao sistema.
+
+4. **Autenticação de Usuários**
+   - Sistema de login e cadastro para identificação de usuários.
 
 ## Próximos Passos
 
