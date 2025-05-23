@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Receitas | Receitas Fáceis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+    <script src="js/busca.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Receitas Fáceis</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="receitas.html">Receitas</a></li>
+                    <li><a href="busca.html" class="active">Buscar</a></li>
+                    <li><a href="login.html" id="loginBtn">Login</a></li>
+                    <li><a href="cadastro.html">Cadastre-se</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Encontre sua Receita Perfeita</h2>
+            <p>Busque por nome, ingredientes ou explore nossas categorias.</p>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <div class="receitas-filtros">
+                <h3>Buscar e Filtrar:</h3>
+                <div class="filtro-grupo">
+                    <label for="termo-busca">Buscar por nome:</label>
+                    <input type="text" id="termo-busca" placeholder="Ex: Bolo de Chocolate">
+                </div>
+                <div class="filtro-grupo">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria">
+                        <option value="">Todas</option>
+                        <option value="1">Entradas</option>
+                        <option value="2">Pratos Principais</option>
+                        <option value="3">Sobremesas</option>
+                        <option value="4">Bebidas</option>
+                        <!-- Adicionar mais categorias se necessário, conforme o schema.sql -->
+                        <option value="5">Vegetariana</option>
+                        <option value="6">Vegana</option>
+                        <option value="7">Rápidas</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="dificuldade">Dificuldade:</label>
+                    <select id="dificuldade">
+                        <option value="">Todas</option>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Médio">Médio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                </div>
+                <button id="btn-buscar-filtrar" class="btn">Buscar / Filtrar</button>
+            </div>
+
+            <div class="receitas-grid" id="receitas-lista-busca">
+                <!-- Aqui serão carregadas dinamicamente as receitas encontradas -->
+                <div class="loading" style="display: none;">Carregando receitas...</div>
+                <p class="info" id="mensagem-busca">Digite um termo ou selecione filtros para iniciar a busca.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Receitas Fáceis. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html> 

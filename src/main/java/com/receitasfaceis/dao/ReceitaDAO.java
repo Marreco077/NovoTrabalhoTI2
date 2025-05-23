@@ -306,11 +306,10 @@ public class ReceitaDAO implements DAO<Receita> {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String nome = rs.getString("nome");
-                    String unidadeMedida = rs.getString("unidade_medida");
                     double quantidade = rs.getDouble("quantidade");
                     String observacao = rs.getString("observacao");
                     
-                    Ingrediente ingrediente = new Ingrediente(id, nome, unidadeMedida);
+                    Ingrediente ingrediente = new Ingrediente(id, nome);
                     ingrediente.setQuantidade(quantidade);
                     ingrediente.setObservacao(observacao);
                     

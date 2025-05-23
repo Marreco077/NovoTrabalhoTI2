@@ -42,8 +42,7 @@ CREATE TABLE IF NOT EXISTS receitas (
 -- Tabela de Ingredientes
 CREATE TABLE IF NOT EXISTS ingredientes (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL UNIQUE,
-    unidade_medida VARCHAR(20)
+    nome VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Tabela de Receitas_Ingredientes (relacionamento N-M)

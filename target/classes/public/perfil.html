@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil | Receitas Fáceis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+    <script src="js/perfil.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Receitas Fáceis</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="receitas.html">Receitas</a></li>
+                    <li><a href="busca.html">Buscar</a></li>
+                    <li><a href="login.html" id="loginBtn">Login</a></li> <!-- Será atualizado por main.js -->
+                    <li><a href="cadastro.html">Cadastre-se</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="content">
+        <div class="container">
+            <h2>Meu Perfil</h2>
+            <div class="perfil-info">
+                <p><strong>Nome:</strong> <span id="perfil-nome">Carregando...</span></p>
+                <p><strong>Email:</strong> <span id="perfil-email">Carregando...</span></p>
+            </div>
+            <button id="btn-logout-perfil" class="btn btn-danger">Sair (Logout)</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Receitas Fáceis. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html> 

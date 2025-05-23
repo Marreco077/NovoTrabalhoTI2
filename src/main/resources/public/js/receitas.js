@@ -1,5 +1,5 @@
 // URL base da API
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'http://localhost:8081/api';
 
 // Elementos do DOM
 const receitasLista = document.getElementById('receitas-lista');
@@ -52,6 +52,7 @@ function exibirReceitas(receitas) {
     let html = '';
     
     receitas.forEach(receita => {
+        console.log("URL da Imagem (receitas.js):", receita.imagemUrl); 
         const imagemUrl = receita.imagemUrl || 'img/receita-padrao.jpg';
         
         html += `

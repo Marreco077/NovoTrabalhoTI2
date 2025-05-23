@@ -6,7 +6,6 @@ package com.receitasfaceis.model;
 public class Ingrediente {
     private int id;
     private String nome;
-    private String unidadeMedida;
     
     // Para relacionamento muitos-para-muitos com receitas
     private double quantidade;
@@ -16,15 +15,13 @@ public class Ingrediente {
     public Ingrediente() {
     }
 
-    public Ingrediente(String nome, String unidadeMedida) {
+    public Ingrediente(String nome) {
         this.nome = nome;
-        this.unidadeMedida = unidadeMedida;
     }
 
-    public Ingrediente(int id, String nome, String unidadeMedida) {
+    public Ingrediente(int id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.unidadeMedida = unidadeMedida;
     }
 
     // Getters e Setters
@@ -42,14 +39,6 @@ public class Ingrediente {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getUnidadeMedida() {
-        return unidadeMedida;
-    }
-
-    public void setUnidadeMedida(String unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
     }
 
     public double getQuantidade() {
@@ -73,7 +62,6 @@ public class Ingrediente {
         return "Ingrediente{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", unidadeMedida='" + unidadeMedida + '\'' +
                 ", quantidade=" + quantidade +
                 (observacao != null ? ", observacao='" + observacao + '\'' : "") +
                 '}';

@@ -68,6 +68,7 @@ function exibirReceita(receita) {
     }
     
     // Exibir imagem
+    console.log("URL da Imagem (receita-detalhes.js):", receita.imagemUrl); 
     if (receita.imagemUrl) {
         receitaImg.src = receita.imagemUrl;
     }
@@ -80,7 +81,7 @@ function exibirReceita(receita) {
     if (receita.ingredientes && receita.ingredientes.length > 0) {
         let ingredientesHtml = '';
         receita.ingredientes.forEach(ingrediente => {
-            ingredientesHtml += `<li>${ingrediente.nome} - ${ingrediente.quantidade} ${ingrediente.unidade || ''}</li>`;
+            ingredientesHtml += `<li>${ingrediente.nome} - ${ingrediente.quantidade}</li>`;
         });
         receitaIngredientes.innerHTML = ingredientesHtml;
     } else {

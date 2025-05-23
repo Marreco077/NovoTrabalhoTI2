@@ -14,13 +14,12 @@ public class IngredienteDAO implements DAO<Ingrediente> {
 
     @Override
     public Ingrediente inserir(Ingrediente ingrediente) throws SQLException {
-        String sql = "INSERT INTO ingredientes (nome, unidade_medida) VALUES (?, ?) RETURNING id";
+        String sql = "INSERT INTO ingredientes (nome) VALUES (?) RETURNING id";
         
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, ingrediente.getNome());
-            stmt.setString(2, ingrediente.getUnidadeMedida());
             
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -34,14 +33,13 @@ public class IngredienteDAO implements DAO<Ingrediente> {
 
     @Override
     public boolean atualizar(Ingrediente ingrediente) throws SQLException {
-        String sql = "UPDATE ingredientes SET nome = ?, unidade_medida = ? WHERE id = ?";
+        String sql = "UPDATE ingredientes SET nome = ? WHERE id = ?";
         
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, ingrediente.getNome());
-            stmt.setString(2, ingrediente.getUnidadeMedida());
-            stmt.setInt(3, ingrediente.getId());
+            stmt.setInt(2, ingrediente.getId());
             
             int linhasAfetadas = stmt.executeUpdate();
             return linhasAfetadas > 0;
@@ -133,8 +131,7 @@ public class IngredienteDAO implements DAO<Ingrediente> {
     private Ingrediente mapResultSetToIngrediente(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String nome = rs.getString("nome");
-        String unidadeMedida = rs.getString("unidade_medida");
         
-        return new Ingrediente(id, nome, unidadeMedida);
+        return new Ingrediente(id, nome);
     }
 } 

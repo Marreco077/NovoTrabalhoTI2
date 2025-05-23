@@ -128,6 +128,7 @@ function criarCardReceita(receita) {
     
     const img = document.createElement('img');
     img.className = 'receita-img';
+    console.log("URL da Imagem (main.js):", receita.imagemUrl); 
     img.src = receita.imagemUrl || 'img/placeholder.jpg';
     img.alt = receita.titulo;
     card.appendChild(img);

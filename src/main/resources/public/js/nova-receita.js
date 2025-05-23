@@ -67,7 +67,6 @@ function adicionarIngrediente() {
     novoIngrediente.innerHTML = `
         <input type="text" name="ingrediente" placeholder="Nome do ingrediente" required>
         <input type="text" name="quantidade" placeholder="Quantidade" required>
-        <input type="text" name="unidade" placeholder="Unidade">
         <button type="button" class="btn btn-sm remover-ingrediente">Remover</button>
     `;
     
@@ -173,13 +172,11 @@ function coletarIngredientes() {
     itens.forEach(item => {
         const nomeInput = item.querySelector('[name="ingrediente"]');
         const quantidadeInput = item.querySelector('[name="quantidade"]');
-        const unidadeInput = item.querySelector('[name="unidade"]');
         
         if (nomeInput && nomeInput.value.trim() && quantidadeInput && quantidadeInput.value.trim()) {
             ingredientes.push({
                 nome: nomeInput.value.trim(),
-                quantidade: parseFloat(quantidadeInput.value.trim() || "0"),
-                unidadeMedida: unidadeInput ? unidadeInput.value.trim() : ""
+                quantidade: parseFloat(quantidadeInput.value.trim() || "0")
             });
         }
     });
