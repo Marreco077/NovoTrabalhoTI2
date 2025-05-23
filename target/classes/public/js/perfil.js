@@ -84,65 +84,85 @@ document.addEventListener('DOMContentLoaded', () => {
             mensagemMinhasReceitas.textContent = 'Erro ao carregar suas receitas. Tente novamente mais tarde.';
             mensagemMinhasReceitas.className = 'error';
         }
-
-        // Adiciona event listener para botões de excluir usando delegação
-        if (minhasReceitasGrid) {
-            minhasReceitasGrid.addEventListener('click', async (event) => {
-                const target = event.target;
-
-                // Lógica para o botão EXCLUIR
-                if (target.classList.contains('btn-excluir-receita')) {
-                    const receitaId = target.dataset.receitaId;
-                    if (!receitaId) {
-                        console.error("ID da receita não encontrado no botão de excluir.");
-                        return;
-                    }
-
-                    const confirmacao = window.confirm("Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.");
-                    if (confirmacao) {
-                        try {
-                            const response = await fetch(`${API_BASE_URL_PERFIL}/receitas/${receitaId}`, {
-                                method: 'DELETE'
-                            });
-
-                            const resultado = await response.json(); 
-
-                            if (response.ok) {
-                                alert(resultado.mensagem || "Receita excluída com sucesso!");
-                                const cardParaRemover = document.querySelector(`.receita-card[data-receita-id='${receitaId}']`);
-                                if (cardParaRemover) {
-                                    cardParaRemover.remove();
-                                }
-                                if (minhasReceitasGrid.children.length === 0 || 
-                                    (minhasReceitasGrid.children.length === 1 && minhasReceitasGrid.firstElementChild.tagName === 'P')) { // Verifica se só sobrou a mensagem
-                                    mensagemMinhasReceitas.textContent = 'Você não tem mais receitas cadastradas.';
-                                    mensagemMinhasReceitas.className = 'info';
-                                    mensagemMinhasReceitas.style.display = 'block';
-                                }
-                            } else {
-                                alert(resultado.mensagem || "Erro ao excluir receita.");
-                            }
-                        } catch (error) {
-                            console.error('Erro ao tentar excluir receita:', error);
-                            alert('Ocorreu um erro na comunicação ao tentar excluir a receita.');
-                        }
-                    }
-                }
-
-                // Lógica para o botão EDITAR
-                if (target.classList.contains('btn-editar-receita')) {
-                    const receitaId = target.dataset.receitaId;
-                    if (!receitaId) {
-                        console.error("ID da receita não encontrado no botão de editar.");
-                        return;
-                    }
-                    // Redireciona para a página de nova receita, passando o ID para edição
-                    window.location.href = `nova-receita.html?editarId=${receitaId}`;
-                }
-            });
-        }
     }
 });
+
+// Função global para ser chamada pelo botão Excluir em main.js
+async function handleExcluirReceitaPerfil(receitaId) {
+    console.log("[Perfil.js] handleExcluirReceitaPerfil chamada com ID:", receitaId);
+    if (!receitaId) {
+        console.error("[Perfil.js] ID da receita inválido para exclusão.");
+        return;
+    }
+
+    const confirmacao = window.confirm("Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.");
+    if (confirmacao) {
+        console.log("[Perfil.js] Usuário confirmou exclusão para o ID:", receitaId);
+        try {
+            const response = await fetch(`${API_BASE_URL_PERFIL}/receitas/${receitaId}`, {
+                method: 'DELETE'
+            });
+            console.log("[Perfil.js] Resposta da API para DELETE:", response);
+
+            const minhasReceitasGrid = document.getElementById('minhas-receitas-grid'); // Obter grid novamente
+            const mensagemMinhasReceitas = document.getElementById('mensagem-minhas-receitas'); // Obter msg novamente
+
+            if (response.ok) {
+                let mensagemSucesso = "Receita excluída com sucesso!";
+                if (response.status !== 204) {
+                    try {
+                        const resultado = await response.json();
+                        if (resultado && resultado.mensagem) mensagemSucesso = resultado.mensagem;
+                        console.log("[Perfil.js] Resultado JSON da API (sucesso):", resultado);
+                    } catch (jsonError) {
+                        console.warn("[Perfil.js] Não foi possível parsear JSON (sucesso), tentando texto.", jsonError);
+                        try {
+                            const textoResultado = await response.text();
+                            console.log("[Perfil.js] Resultado TEXTO da API (sucesso):", textoResultado);
+                        } catch (textError) { /* Ignora */ }
+                    }
+                }
+                alert(mensagemSucesso);
+
+                if (minhasReceitasGrid) {
+                    const cardParaRemover = minhasReceitasGrid.querySelector(`.receita-card[data-receita-id='${receitaId}']`);
+                    console.log("[Perfil.js] Tentando remover card. Seletor:", `.receita-card[data-receita-id='${receitaId}']`, "Encontrado:", cardParaRemover);
+                    if (cardParaRemover) {
+                        cardParaRemover.remove();
+                        console.log("[Perfil.js] Card DOM removido.");
+                    } else {
+                        console.error("[Perfil.js] FALHA AO ENCONTRAR CARD PARA REMOÇÃO. ID:", receitaId);
+                    }
+                    if (mensagemMinhasReceitas && (minhasReceitasGrid.children.length === 0 || (minhasReceitasGrid.children.length === 1 && minhasReceitasGrid.firstElementChild.tagName === 'P'))) {
+                        mensagemMinhasReceitas.textContent = 'Você não tem mais receitas cadastradas.';
+                        mensagemMinhasReceitas.className = 'info';
+                        mensagemMinhasReceitas.style.display = 'block';
+                    }
+                } else {
+                     console.error("[Perfil.js] minhasReceitasGrid não encontrado ao tentar atualizar UI pós-exclusão.");
+                }
+            } else {
+                let mensagemErro = "Erro ao excluir receita.";
+                try {
+                    const erroResultado = await response.json();
+                    if (erroResultado && erroResultado.mensagem) mensagemErro = erroResultado.mensagem;
+                } catch (e) {
+                    try {
+                       const textoErro = await response.text();
+                       if (textoErro) mensagemErro = textoErro; 
+                    } catch (textErr) { /* ignora */ }
+                }
+                alert(mensagemErro);
+            }
+        } catch (error) {
+            console.error('Erro na comunicação ao excluir receita:', error);
+            alert('Ocorreu um erro na comunicação ao tentar excluir a receita.');
+        }
+    }
+}
+
+// Adiciona a função ao objeto window para torná-la global
+window.handleExcluirReceitaPerfil = handleExcluirReceitaPerfil;
 
 // Nota: As funções getUsuarioLogado(), logout() e criarCardReceita() são esperadas do arquivo main.js,
 // que deve ser carregado antes deste script na página perfil.html.

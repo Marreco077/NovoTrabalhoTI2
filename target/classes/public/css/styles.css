@@ -227,28 +227,51 @@ section h2 {
     box-shadow: 0 6px 12px rgba(var(--ctp-shadow-color-rgb), var(--ctp-shadow-opacity-high));
 }
 
-.receita-img {
-    width: 100%;
+.receita-display-area {
+    display: block;
+    position: relative;
     height: 200px;
-    object-fit: cover;
+    overflow: hidden;
 }
 
-.receita-info {
-    padding: 15px;
+.receita-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: var(--ctp-mantle);
 }
 
-.receita-info h3 {
+.receita-display-area .receita-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 15px 10px 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+    color: var(--ctp-text-on-overlay, #FFFFFF);
+    z-index: 1;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+    box-sizing: border-box;
+}
+
+.receita-display-area .receita-info h3 {
     margin-bottom: 8px;
     font-size: 1.1rem;
-    color: var(--ctp-peach);
+    color: var(--ctp-rosewater);
 }
 
-.receita-meta {
+.receita-display-area .receita-meta {
     display: flex;
     justify-content: space-between;
     margin-top: 12px;
     font-size: 0.9rem;
-    color: var(--ctp-subtext0);
+    color: var(--ctp-overlay0);
+}
+
+.receita-display-area .receita-meta span {
+    color: inherit;
 }
 
 .loading {
@@ -345,4 +368,119 @@ footer a:hover {
         margin-left: 10px;
         margin-right: 10px;
     }
+}
+
+/* Detalhes da Receita - Específico para a página de detalhes */
+.receita-detalhes .receita-cabecalho {
+    margin-bottom: 30px; /* Espaço abaixo do cabeçalho da receita */
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--ctp-surface1);
+}
+
+.receita-detalhes .receita-cabecalho h2 {
+    text-align: left; /* Título da receita alinhado à esquerda */
+    margin-bottom: 15px;
+}
+
+/* Estilos para a seção de informações (dificuldade, tempo, autor) na página de detalhes */
+.receita-detalhes .receita-cabecalho .receita-info {
+    /* Remove qualquer estilo de posicionamento absoluto herdado dos cards */
+    position: static;
+    background: none; /* Remove o gradiente dos cards */
+    color: var(--ctp-text); /* Cor de texto padrão da página */
+    padding: 0; /* Remove padding específico dos cards */
+    border-radius: 0;
+    display: flex; /* Organiza meta e autor em linha */
+    flex-wrap: wrap; /* Permite quebra de linha se não couber */
+    justify-content: space-between; /* Espaça os itens */
+    align-items: center;
+    margin-top: 10px;
+}
+
+.receita-detalhes .receita-cabecalho .receita-meta {
+    display: flex;
+    gap: 20px; /* Espaço entre os itens de meta (dificuldade, tempo, porções) */
+    color: var(--ctp-subtext0); /* Cor para os metadados */
+    font-size: 0.9rem;
+    margin: 0; /* Remove margens específicas dos cards */
+    justify-content: flex-start; /* Alinha à esquerda dentro do seu espaço */
+}
+
+.receita-detalhes .receita-cabecalho .receita-meta .meta-item {
+    display: flex;
+    align-items: center;
+}
+
+.receita-detalhes .receita-cabecalho .receita-meta .meta-item .icon {
+    margin-right: 5px;
+    /* Adicionar estilos para os ícones se eles forem SVGs ou de uma biblioteca de fontes */
+}
+
+.receita-detalhes .receita-cabecalho .receita-autor {
+    font-size: 0.9rem;
+    color: var(--ctp-subtext1);
+    margin-top: 5px; /* Pequena margem se quebrar linha */
+}
+
+.receita-detalhes .receita-cabecalho .receita-autor span {
+    font-weight: bold;
+    color: var(--ctp-mauve);
+}
+
+.receita-detalhes .receita-imagem img#receita-img {
+    width: 100%;
+    max-height: 450px; /* Mantendo uma altura máxima razoável */
+    object-fit: contain; /* Para mostrar a imagem inteira */
+    display: block;
+    margin: 0 auto; /* Centraliza a imagem se ela for mais estreita que o container */
+    background-color: var(--ctp-mantle); /* Cor de fundo para espaços vazios */
+}
+
+/* Se você tiver uma classe genérica para a imagem de detalhes que não seja por ID: */
+/* .receita-detalhes-container img.imagem-receita { ... } */
+
+.receita-card-acoes {
+    padding: 10px 15px;
+    background-color: var(--ctp-base); /* Usa a cor base do card para o fundo das ações */
+    border-top: 1px solid var(--ctp-surface1); /* Linha sutil para separar da imagem/info */
+    display: flex;
+    justify-content: flex-end; /* Alinha botões à direita */
+    gap: 10px; /* Espaço entre os botões */
+}
+
+/* Estilos específicos para nova-receita.html */
+#ingredientes-lista .ingrediente-item {
+  display: flex;
+  align-items: center; /* Alinha verticalmente os inputs e o botão */
+  gap: 10px; /* Espaço entre os elementos do item */
+  margin-bottom: 15px; /* Espaço abaixo de cada item de ingrediente */
+}
+
+#ingredientes-lista .ingrediente-item input[type="text"] {
+  flex-grow: 1; /* Faz os inputs de texto ocuparem o espaço disponível */
+  margin-bottom: 0; /* Remove margem inferior padrão do input dentro do item */
+}
+
+#ingredientes-lista .remover-ingrediente {
+  padding: 8px 12px; /* Padding menor para botões de remover */
+  background-color: var(--ctp-red);
+  color: var(--ctp-base);
+  flex-shrink: 0; /* Impede que o botão encolha */
+}
+
+#ingredientes-lista .remover-ingrediente:hover {
+  background-color: var(--ctp-maroon);
+}
+
+#adicionar-ingrediente {
+  margin-top: 15px; /* Espaço acima do botão de adicionar */
+  display: block; /* Faz o botão ocupar a largura total */
+  width: auto; /* Permite que o padding defina a largura, centralizado pelo text-align do form-group se houver */
+  margin-left: auto; /* Para centralizar se for display block e width auto */
+  margin-right: auto;
+  padding: 10px 25px;
+}
+
+.form-group.text-center {
+    text-align: center;
 } 

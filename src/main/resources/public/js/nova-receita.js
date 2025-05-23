@@ -58,8 +58,8 @@ async function inicializarFormularioReceita() {
     if (loginAlerta) loginAlerta.style.display = 'none';
 
     const urlParams = new URLSearchParams(window.location.search);
-    idReceitaParaEditar = urlParams.get('editarId');
-    console.log("ID para editar:", idReceitaParaEditar);
+    idReceitaParaEditar = urlParams.get('id');
+    console.log("ID da receita (parâmetro 'id'):", idReceitaParaEditar);
 
     if (idReceitaParaEditar) {
         console.log("Modo de EDIÇÃO.");

@@ -56,31 +56,36 @@ function exibirReceitas(receitas) {
         const imagemUrl = receita.imagemUrl || 'img/receita-padrao.jpg';
         
         html += `
-            <div class="receita-card" data-id="${receita.id}">
-                <div class="receita-img">
-                    <img src="${imagemUrl}" alt="${receita.titulo}">
-                </div>
-                <div class="receita-info">
-                    <h3>${receita.titulo}</h3>
-                    <p>${receita.descricao || 'Sem descrição'}</p>
-                    <div class="receita-meta">
-                        <span class="dificuldade">${receita.dificuldade || 'N/A'}</span>
-                        <span class="tempo">${receita.tempoPreparo || 0} min</span>
+            <div class="receita-card" data-receita-id="${receita.id}"> 
+                <a class="receita-display-area" href="receita-detalhes.html?id=${receita.id}">
+                    <div class="img-container"> 
+                        <img class="receita-img" src="${imagemUrl}" alt="${receita.titulo}">
                     </div>
-                    <a href="receita-detalhes.html?id=${receita.id}" class="btn">Ver Receita</a>
-                </div>
+                    <div class="receita-info">
+                        <h3>${receita.titulo}</h3>
+                        <div class="receita-meta">
+                            <span class="dificuldade">${receita.dificuldade || 'N/A'}</span>
+                            <span class="tempo">${receita.tempoPreparo || '0'} min</span>
+                        </div>
+                    </div>
+                </a>
+                
             </div>
         `;
     });
     
     receitasLista.innerHTML = html;
     
-    // Adicionar evento de clique aos cards de receita
+    // O evento de clique nos cards não é mais necessário aqui, pois o <a> já cuida da navegação.
+    // Se precisar manter um JS listener para algo além da navegação, pode ser reavaliado.
+    /*
     document.querySelectorAll('.receita-card').forEach(card => {
         card.addEventListener('click', () => {
-            window.location.href = `receita-detalhes.html?id=${card.dataset.id}`;
+            // A navegação é feita pelo <a> agora.
+            // window.location.href = `receita-detalhes.html?id=${card.dataset.id}`;
         });
     });
+    */
 }
 
 // Função para aplicar filtros
