@@ -483,4 +483,11 @@ footer a:hover {
 
 .form-group.text-center {
     text-align: center;
+}
+
+/* Adicionando padding específico para botões de filtro/busca se necessário */
+#btn-filtrar,
+#btn-buscar-filtrar {
+    padding: 10px 20px; /* Garantir o padding */
+    margin-top: 10px; /* Adicionar um pouco de espaço acima se estiverem muito colados aos selects */
 } 
