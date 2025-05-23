@@ -107,6 +107,7 @@ public class Application {
                 put("/:id", UsuarioController.atualizarUsuario);
                 delete("/:id", UsuarioController.excluirUsuario);
                 post("/login", UsuarioController.autenticarUsuario);
+                get("/:usuarioId/receitas", ReceitaController.getReceitasDoUsuario);
             });
             
             // Rotas para receitas

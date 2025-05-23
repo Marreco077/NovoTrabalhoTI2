@@ -227,6 +227,23 @@ public class ReceitaController {
             return Application.gson.toJson(criarResposta("erro", "Erro ao buscar receitas: " + e.getMessage()));
         }
     };
+
+    /**
+     * Rota para buscar todas as receitas de um usuário específico.
+     */
+    public static final Route getReceitasDoUsuario = (Request req, Response res) -> {
+        try {
+            int usuarioId = Integer.parseInt(req.params("usuarioId"));
+            List<Receita> receitas = receitaDAO.buscarPorUsuarioId(usuarioId);
+            return Application.gson.toJson(receitas);
+        } catch (NumberFormatException e) {
+            res.status(400);
+            return Application.gson.toJson(criarResposta("erro", "ID de usuário inválido"));
+        } catch (SQLException e) {
+            res.status(500);
+            return Application.gson.toJson(criarResposta("erro", "Erro ao buscar receitas do usuário: " + e.getMessage()));
+        }
+    };
     
     /**
      * Cria uma resposta padronizada.

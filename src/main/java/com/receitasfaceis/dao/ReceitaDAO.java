@@ -359,4 +359,37 @@ public class ReceitaDAO implements DAO<Receita> {
             stmt.executeUpdate();
         }
     }
+
+    /**
+     * Busca todas as receitas criadas por um usuário específico.
+     *
+     * @param usuarioId O ID do usuário.
+     * @return Uma lista de receitas do usuário.
+     * @throws SQLException Se ocorrer um erro no banco de dados.
+     */
+    public List<Receita> buscarPorUsuarioId(int usuarioId) throws SQLException {
+        String sql = "SELECT * FROM receitas WHERE usuario_id = ? ORDER BY data_atualizacao DESC";
+        List<Receita> receitas = new ArrayList<>();
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, usuarioId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Receita receita = mapResultSetToReceita(rs);
+                    // Carregar ingredientes para cada receita individualmente
+                    // Pode ser otimizado se houver muitas receitas por usuário, mas para um perfil é geralmente aceitável.
+                    carregarIngredientes(conn, receita); 
+                    receitas.add(receita);
+                }
+            }
+            return receitas;
+        } catch (SQLException e) {
+            // Logar o erro ou tratar de forma mais específica se necessário
+            System.err.println("Erro ao buscar receitas por usuário ID: " + usuarioId + " - " + e.getMessage());
+            throw e; // Re-lançar para que o chamador possa tratar
+        }
+    }
 } 
