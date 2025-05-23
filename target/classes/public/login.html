@@ -13,12 +13,14 @@
         <div class="container">
             <h1>Receitas Fáceis</h1>
             <nav>
-                <ul>
+                <ul id="nav-links">
                     <li><a href="index.html">Início</a></li>
                     <li><a href="receitas.html">Receitas</a></li>
-                    <li><a href="busca.html">Buscar</a></li>
-                    <li><a href="login.html" class="active" id="loginBtn">Login</a></li>
+                    <li><a href="nova-receita.html">Nova Receita</a></li>
+                    <li id="perfilNavItem" style="display: none;"><a href="perfil.html">Perfil</a></li>
+                    <li id="loginNavItem"><a href="login.html">Login</a></li>
                     <li id="cadastroNavItem"><a href="cadastro.html">Cadastre-se</a></li>
+                    <li><button id="theme-toggle-button" class="btn" title="Alternar tema">🌙</button></li>
                 </ul>
             </nav>
         </div>
@@ -55,5 +57,8 @@
             <p>&copy; 2025 Receitas Fáceis. Todos os direitos reservados.</p>
         </div>
     </footer>
+    <script src="js/main.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/theme-toggle.js" defer></script>
 </body>
 </html> 

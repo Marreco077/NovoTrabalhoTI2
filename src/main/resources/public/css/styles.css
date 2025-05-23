@@ -1,4 +1,68 @@
 /* Reset e estilos gerais */
+:root {
+    --ctp-rosewater: #f5e0dc;
+    --ctp-flamingo: #f2cdcd;
+    --ctp-pink: #f5c2e7;
+    --ctp-mauve: #cba6f7;
+    --ctp-red: #d20f39;
+    --ctp-maroon: #e64553;
+    --ctp-peach: #fab387;
+    --ctp-yellow: #f9e2af;
+    --ctp-green: #a6e3a1;
+    --ctp-teal: #94e2d5;
+    --ctp-sky: #89dceb;
+    --ctp-sapphire: #74c7ec;
+    --ctp-blue: #89b4fa;
+    --ctp-lavender: #b4befe;
+
+    /* Latte (Light Theme - Default) */
+    --ctp-text: #4c4f69;
+    --ctp-subtext1: #5c5f77;
+    --ctp-subtext0: #6c6f85;
+    --ctp-overlay2: #5c5f77; /* Alterado de #7c7f93 para Latte Subtext1 para maior contraste nas bordas */
+    --ctp-overlay1: #8c8fa1;
+    --ctp-overlay0: #9ca0b0;
+    --ctp-surface2: #acb0be;
+    --ctp-surface1: #bcc0cc;
+    --ctp-surface0: #ccd0da;
+    --ctp-base: #eff1f5;         /* Document Background */
+    --ctp-mantle: #e6e9ef;       /* Secondary Background (cards, header) */
+    --ctp-crust: #dce0e8;        /* Tertiary Background (footer) */
+
+    --ctp-button-bg: var(--ctp-mauve);
+    --ctp-button-text: #1e1e2e; /* Alterado para Mocha Base para alto contraste no botão Mauve (Latte) */
+    --ctp-button-hover-bg: var(--ctp-lavender);
+    --ctp-button-hover-text: #1e1e2e; /* Alterado para Mocha Base para alto contraste no botão Lavender (Latte hover) */
+
+    --ctp-shadow-color-rgb: 0, 0, 0; /* Using black for shadows */
+    --ctp-shadow-opacity-low: 0.05;
+    --ctp-shadow-opacity-medium: 0.1;
+    --ctp-shadow-opacity-high: 0.15;
+}
+
+body.dark-mode {
+    /* Mocha (Dark Theme) */
+    --ctp-text: #cdd6f4;
+    --ctp-subtext1: #bac2de;
+    --ctp-subtext0: #a6adc8;
+    --ctp-overlay2: #9399b2;
+    --ctp-overlay1: #7f849c;
+    --ctp-overlay0: #6c7086;
+    --ctp-surface2: #585b70;
+    --ctp-surface1: #45475a;
+    --ctp-surface0: #313244;
+    --ctp-base: #1e1e2e;
+    --ctp-mantle: #181825;
+    --ctp-crust: #11111b;
+
+    --ctp-button-text: var(--ctp-base); /* Dark (Mocha Base) text for light mauve button */
+    --ctp-button-hover-text: var(--ctp-base);
+
+    --ctp-shadow-opacity-low: 0.15;
+    --ctp-shadow-opacity-medium: 0.2;
+    --ctp-shadow-opacity-high: 0.25;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,8 +72,8 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
+    color: var(--ctp-text);
+    background-color: var(--ctp-base);
 }
 
 .container {
@@ -19,20 +83,20 @@ body {
 }
 
 a {
-    color: #ff6b6b;
+    color: var(--ctp-mauve);
     text-decoration: none;
 }
 
 a:hover {
-    color: #ff4757;
+    color: var(--ctp-lavender);
 }
 
 .btn {
     display: inline-block;
     padding: 10px 20px;
     border: none;
-    background-color: #ff6b6b;
-    color: white;
+    background-color: var(--ctp-button-bg);
+    color: var(--ctp-button-text);
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -40,14 +104,39 @@ a:hover {
 }
 
 .btn:hover {
-    background-color: #ff4757;
-    color: white;
+    background-color: var(--ctp-button-hover-bg);
+    color: var(--ctp-button-hover-text);
+}
+
+/* Estilo base para botões, incluindo inputs do tipo botão/submit */
+button,
+input[type="submit"],
+input[type="button"] {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--ctp-button-bg);
+    color: var(--ctp-button-text);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background-color: var(--ctp-button-hover-bg);
+    color: var(--ctp-button-hover-text);
 }
 
 /* Header */
 header {
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--ctp-mantle);
+    box-shadow: 0 2px 5px rgba(var(--ctp-shadow-color-rgb), var(--ctp-shadow-opacity-low));
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -61,7 +150,7 @@ header .container {
 }
 
 header h1 {
-    color: #ff6b6b;
+    color: var(--ctp-mauve);
     font-size: 24px;
     margin: 0;
 }
@@ -76,18 +165,18 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #555;
+    color: var(--ctp-subtext0);
     font-weight: 500;
     transition: color 0.3s;
 }
 
 nav ul li a:hover, nav ul li a.active {
-    color: #ff6b6b;
+    color: var(--ctp-mauve);
 }
 
 /* Hero section */
 .hero {
-    background-color: #ffe8e8;
+    background-color: var(--ctp-mantle);
     padding: 60px 0;
     text-align: center;
 }
@@ -95,7 +184,7 @@ nav ul li a:hover, nav ul li a.active {
 .hero h2 {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: #444;
+    color: var(--ctp-blue);
 }
 
 .hero p {
@@ -104,7 +193,7 @@ nav ul li a:hover, nav ul li a.active {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    color: #666;
+    color: var(--ctp-subtext1);
 }
 
 /* Seções */
@@ -115,7 +204,7 @@ section {
 section h2 {
     margin-bottom: 30px;
     text-align: center;
-    color: #444;
+    color: var(--ctp-blue);
 }
 
 /* Grid de receitas */
@@ -126,16 +215,16 @@ section h2 {
 }
 
 .receita-card {
-    background-color: white;
+    background-color: var(--ctp-mantle);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(var(--ctp-shadow-color-rgb), var(--ctp-shadow-opacity-medium));
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .receita-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(var(--ctp-shadow-color-rgb), var(--ctp-shadow-opacity-high));
 }
 
 .receita-img {
@@ -151,7 +240,7 @@ section h2 {
 .receita-info h3 {
     margin-bottom: 8px;
     font-size: 1.1rem;
-    color: #333;
+    color: var(--ctp-peach);
 }
 
 .receita-meta {
@@ -159,13 +248,13 @@ section h2 {
     justify-content: space-between;
     margin-top: 12px;
     font-size: 0.9rem;
-    color: #777;
+    color: var(--ctp-subtext0);
 }
 
 .loading {
     text-align: center;
     padding: 20px;
-    color: #777;
+    color: var(--ctp-subtext0);
     grid-column: 1 / -1;
 }
 
@@ -178,15 +267,23 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
+    color: var(--ctp-text);
 }
 
 input, textarea, select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--ctp-overlay2);
     border-radius: 4px;
     font-family: inherit;
     font-size: 1rem;
+    color: var(--ctp-text);
+    background-color: var(--ctp-base); 
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--ctp-mauve);
+    outline: none; 
 }
 
 /* Login e cadastro */
@@ -194,14 +291,15 @@ input, textarea, select {
     max-width: 500px;
     margin: 0 auto;
     padding: 30px;
-    background-color: white;
+    background-color: var(--ctp-mantle);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(var(--ctp-shadow-color-rgb), var(--ctp-shadow-opacity-medium));
 }
 
 .auth-container h2 {
     margin-bottom: 20px;
     text-align: center;
+    color: var(--ctp-blue);
 }
 
 .auth-actions {
@@ -213,15 +311,24 @@ input, textarea, select {
 
 .auth-actions p {
     font-size: 0.9rem;
-    color: #777;
+    color: var(--ctp-subtext0);
 }
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--ctp-crust);
+    color: var(--ctp-text);
     padding: 20px 0;
     text-align: center;
+}
+
+footer a {
+    color: var(--ctp-mauve);
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: var(--ctp-lavender);
 }
 
 /* Responsividade */
