@@ -31,8 +31,13 @@ async function handleLogin(e) {
             throw new Error(data.mensagem || 'Erro ao fazer login');
         }
         
-        // Armazena o usuário no localStorage
-        setUsuarioLogado(data);
+        // Armazenar o usuário no localStorage
+        try {
+            localStorage.setItem('usuarioLogado', JSON.stringify(data));
+            console.log("Usuário armazenado com sucesso:", data);
+        } catch (e) {
+            console.error("Erro ao salvar no localStorage:", e);
+        }
         
         // Redireciona para a página inicial
         window.location.href = 'index.html';

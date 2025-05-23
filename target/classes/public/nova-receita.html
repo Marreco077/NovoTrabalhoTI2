@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Receita | Receitas Fáceis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+    <script src="js/nova-receita.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Receitas Fáceis</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="receitas.html">Receitas</a></li>
+                    <li><a href="busca.html">Buscar</a></li>
+                    <li><a href="login.html" id="loginBtn">Login</a></li>
+                    <li><a href="cadastro.html">Cadastre-se</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="content">
+        <div class="container">
+            <h2>Nova Receita</h2>
+            
+            <div id="login-alerta" style="display: none;" class="alerta alerta-warning">
+                <p>Você precisa estar logado para criar receitas. <a href="login.html">Clique aqui para fazer login</a>.</p>
+            </div>
+            
+            <form id="form-receita" class="form-receita" onsubmit="return false;">
+                <div class="form-grupo">
+                    <label for="titulo">Título da Receita*</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" name="descricao" rows="2"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-grupo">
+                        <label for="categoriaId">Categoria*</label>
+                        <select id="categoriaId" name="categoriaId" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Entradas</option>
+                            <option value="2">Pratos Principais</option>
+                            <option value="3">Sobremesas</option>
+                            <option value="4">Bebidas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-grupo">
+                        <label for="dificuldade">Dificuldade*</label>
+                        <select id="dificuldade" name="dificuldade" required>
+                            <option value="">Selecione...</option>
+                            <option value="Fácil">Fácil</option>
+                            <option value="Médio">Médio</option>
+                            <option value="Difícil">Difícil</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-grupo">
+                        <label for="tempoPreparo">Tempo de Preparo (minutos)*</label>
+                        <input type="number" id="tempoPreparo" name="tempoPreparo" min="1" required>
+                    </div>
+                    
+                    <div class="form-grupo">
+                        <label for="porcoes">Porções*</label>
+                        <input type="number" id="porcoes" name="porcoes" min="1" required>
+                    </div>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="imagemUrl">URL da Imagem</label>
+                    <input type="url" id="imagemUrl" name="imagemUrl" placeholder="http://exemplo.com/imagem.jpg">
+                </div>
+                
+                <div class="form-grupo">
+                    <label>Ingredientes*</label>
+                    <div id="ingredientes-lista">
+                        <!-- Ingredientes serão inseridos aqui dinamicamente -->
+                        <div class="ingrediente-item">
+                            <input type="text" name="ingrediente" placeholder="Nome do ingrediente" required>
+                            <input type="text" name="quantidade" placeholder="Quantidade" required>
+                            <input type="text" name="unidade" placeholder="Unidade">
+                            <button type="button" class="btn btn-sm remover-ingrediente">Remover</button>
+                        </div>
+                    </div>
+                    <button type="button" id="adicionar-ingrediente" class="btn btn-sm">Adicionar Ingrediente</button>
+                </div>
+                
+                <div class="form-grupo">
+                    <label for="modoPreparo">Modo de Preparo*</label>
+                    <textarea id="modoPreparo" name="modoPreparo" rows="10" required></textarea>
+                </div>
+                
+                <div class="form-acoes">
+                    <button type="submit" class="btn btn-primary">Salvar Receita</button>
+                    <a href="receitas.html" class="btn">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Receitas Fáceis. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html> 

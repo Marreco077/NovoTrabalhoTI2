@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.receitasfaceis.Application;
 import com.receitasfaceis.dao.ReceitaDAO;
+import com.receitasfaceis.dao.IngredienteDAO;
 import com.receitasfaceis.model.Receita;
+import com.receitasfaceis.model.Ingrediente;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -22,18 +25,18 @@ import java.util.Map;
  */
 public class ReceitaController {
 
-    private static final Gson gson = new Gson();
     private static final ReceitaDAO receitaDAO = new ReceitaDAO();
+    private static final IngredienteDAO ingredienteDAO = new IngredienteDAO();
 
     /**
      * Rota para listar todas as receitas.
      */
     public static final Route listarReceitas = (Request req, Response res) -> {
         try {
-            return gson.toJson(receitaDAO.listar());
+            return Application.gson.toJson(receitaDAO.listar());
         } catch (SQLException e) {
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao listar receitas: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao listar receitas: " + e.getMessage()));
         }
     };
 
@@ -46,17 +49,17 @@ public class ReceitaController {
             Receita receita = receitaDAO.buscarPorId(id);
             
             if (receita != null) {
-                return gson.toJson(receita);
+                return Application.gson.toJson(receita);
             } else {
                 res.status(404);
-                return gson.toJson(criarResposta("erro", "Receita não encontrada"));
+                return Application.gson.toJson(criarResposta("erro", "Receita não encontrada"));
             }
         } catch (NumberFormatException e) {
             res.status(400);
-            return gson.toJson(criarResposta("erro", "ID inválido"));
+            return Application.gson.toJson(criarResposta("erro", "ID inválido"));
         } catch (SQLException e) {
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao buscar receita: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao buscar receita: " + e.getMessage()));
         }
     };
 
@@ -65,23 +68,66 @@ public class ReceitaController {
      */
     public static final Route criarReceita = (Request req, Response res) -> {
         try {
-            Receita receita = gson.fromJson(req.body(), Receita.class);
+            System.out.println("Iniciando criação de receita");
+            System.out.println("Corpo da requisição: " + req.body());
+            
+            Receita receita = Application.gson.fromJson(req.body(), Receita.class);
+            System.out.println("Receita deserializada: " + receita);
             
             if (receita.getTitulo() == null || receita.getTitulo().trim().isEmpty() ||
                 receita.getModoPreparo() == null || receita.getModoPreparo().trim().isEmpty() ||
                 receita.getUsuarioId() <= 0) {
                 
                 res.status(400);
-                return gson.toJson(criarResposta("erro", "Título, modo de preparo e usuário são obrigatórios"));
+                String erro = "Título, modo de preparo e usuário são obrigatórios";
+                System.out.println("Erro de validação: " + erro);
+                return Application.gson.toJson(criarResposta("erro", erro));
             }
             
-            receita = receitaDAO.inserir(receita);
-            res.status(201); // Created
+            // Processamento dos ingredientes
+            System.out.println("Ingredientes enviados: " + 
+                      (receita.getIngredientes() == null ? "nulo" : receita.getIngredientes().size()));
+                      
+            if (receita.getIngredientes() != null && !receita.getIngredientes().isEmpty()) {
+                List<Ingrediente> ingredientesProcessados = new ArrayList<>();
+                
+                for (Ingrediente ingrediente : receita.getIngredientes()) {
+                    System.out.println("Processando ingrediente: " + ingrediente.getNome());
+                    
+                    // Verifica se o ingrediente já existe no banco de dados
+                    Ingrediente ingredienteExistente = ingredienteDAO.buscarPorNome(ingrediente.getNome());
+                    
+                    if (ingredienteExistente != null) {
+                        // Usa o ingrediente existente, mas mantém a quantidade informada
+                        System.out.println("Ingrediente já existe: " + ingredienteExistente.getId());
+                        ingredienteExistente.setQuantidade(ingrediente.getQuantidade());
+                        ingredienteExistente.setObservacao(ingrediente.getObservacao());
+                        ingredientesProcessados.add(ingredienteExistente);
+                    } else {
+                        // Cria um novo ingrediente no banco de dados
+                        System.out.println("Criando novo ingrediente: " + ingrediente.getNome());
+                        Ingrediente novoIngrediente = ingredienteDAO.inserir(ingrediente);
+                        System.out.println("Novo ingrediente criado com ID: " + novoIngrediente.getId());
+                        ingredientesProcessados.add(novoIngrediente);
+                    }
+                }
+                
+                // Substitui os ingredientes da receita pelos processados
+                receita.setIngredientes(ingredientesProcessados);
+            }
             
-            return gson.toJson(receita);
+            System.out.println("Inserindo receita no banco de dados");
+            receita = receitaDAO.inserir(receita);
+            System.out.println("Receita inserida com ID: " + receita.getId());
+            
+            res.status(201); // Created
+            String responseJson = Application.gson.toJson(receita);
+            System.out.println("Resposta JSON: " + responseJson);
+            return responseJson;
         } catch (Exception e) {
+            e.printStackTrace();
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao criar receita: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao criar receita: " + e.getMessage()));
         }
     };
 
@@ -95,27 +141,27 @@ public class ReceitaController {
             
             if (receitaAtual == null) {
                 res.status(404);
-                return gson.toJson(criarResposta("erro", "Receita não encontrada"));
+                return Application.gson.toJson(criarResposta("erro", "Receita não encontrada"));
             }
             
-            Receita receitaAtualizada = gson.fromJson(req.body(), Receita.class);
+            Receita receitaAtualizada = Application.gson.fromJson(req.body(), Receita.class);
             receitaAtualizada.setId(id);
             
             // Manter o usuário original da receita
             receitaAtualizada.setUsuarioId(receitaAtual.getUsuarioId());
             
             if (receitaDAO.atualizar(receitaAtualizada)) {
-                return gson.toJson(receitaAtualizada);
+                return Application.gson.toJson(receitaAtualizada);
             } else {
                 res.status(500);
-                return gson.toJson(criarResposta("erro", "Falha ao atualizar receita"));
+                return Application.gson.toJson(criarResposta("erro", "Falha ao atualizar receita"));
             }
         } catch (NumberFormatException e) {
             res.status(400);
-            return gson.toJson(criarResposta("erro", "ID inválido"));
+            return Application.gson.toJson(criarResposta("erro", "ID inválido"));
         } catch (SQLException e) {
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao atualizar receita: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao atualizar receita: " + e.getMessage()));
         }
     };
 
@@ -128,21 +174,21 @@ public class ReceitaController {
             
             if (receitaDAO.buscarPorId(id) == null) {
                 res.status(404);
-                return gson.toJson(criarResposta("erro", "Receita não encontrada"));
+                return Application.gson.toJson(criarResposta("erro", "Receita não encontrada"));
             }
             
             if (receitaDAO.remover(id)) {
-                return gson.toJson(criarResposta("sucesso", "Receita excluída com sucesso"));
+                return Application.gson.toJson(criarResposta("sucesso", "Receita excluída com sucesso"));
             } else {
                 res.status(500);
-                return gson.toJson(criarResposta("erro", "Falha ao excluir receita"));
+                return Application.gson.toJson(criarResposta("erro", "Falha ao excluir receita"));
             }
         } catch (NumberFormatException e) {
             res.status(400);
-            return gson.toJson(criarResposta("erro", "ID inválido"));
+            return Application.gson.toJson(criarResposta("erro", "ID inválido"));
         } catch (SQLException e) {
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao excluir receita: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao excluir receita: " + e.getMessage()));
         }
     };
 
@@ -155,7 +201,7 @@ public class ReceitaController {
             
             if (ingredientesParam == null || ingredientesParam.trim().isEmpty()) {
                 res.status(400);
-                return gson.toJson(criarResposta("erro", "Parâmetro 'ids' é obrigatório"));
+                return Application.gson.toJson(criarResposta("erro", "Parâmetro 'ids' é obrigatório"));
             }
             
             List<Integer> ingredientesIds = new ArrayList<>();
@@ -171,14 +217,14 @@ public class ReceitaController {
             
             if (ingredientesIds.isEmpty()) {
                 res.status(400);
-                return gson.toJson(criarResposta("erro", "Nenhum ID de ingrediente válido fornecido"));
+                return Application.gson.toJson(criarResposta("erro", "Nenhum ID de ingrediente válido fornecido"));
             }
             
             List<Receita> receitas = receitaDAO.buscarPorIngredientes(ingredientesIds);
-            return gson.toJson(receitas);
+            return Application.gson.toJson(receitas);
         } catch (SQLException e) {
             res.status(500);
-            return gson.toJson(criarResposta("erro", "Erro ao buscar receitas: " + e.getMessage()));
+            return Application.gson.toJson(criarResposta("erro", "Erro ao buscar receitas: " + e.getMessage()));
         }
     };
     

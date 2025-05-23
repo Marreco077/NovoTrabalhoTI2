@@ -11,7 +11,7 @@ public class DatabaseConfig {
     // Configurações de conexão
     private static final String URL = "jdbc:postgresql://localhost:5432/receitasfaceis";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static final String PASSWORD = "123"; // Substitua pela sua senha do PostgreSQL
     
     private static Connection connection = null;
 

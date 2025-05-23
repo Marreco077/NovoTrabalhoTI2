@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cadastroForm) {
         cadastroForm.addEventListener('submit', handleCadastro);
     }
+
+    console.log("URL da API:", API_BASE_URL);
 });
 
 async function handleCadastro(e) {

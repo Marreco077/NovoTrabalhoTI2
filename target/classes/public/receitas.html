@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas | Receitas Fáceis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/receitas.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Receitas Fáceis</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="receitas.html" class="active">Receitas</a></li>
+                    <li><a href="busca.html">Buscar</a></li>
+                    <li><a href="login.html" id="loginBtn">Login</a></li>
+                    <li><a href="cadastro.html">Cadastre-se</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Nossas Receitas</h2>
+            <p>Encontre as melhores receitas para o seu dia a dia</p>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <div class="receitas-filtros">
+                <h3>Filtrar por:</h3>
+                <div class="filtro-grupo">
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria">
+                        <option value="">Todas</option>
+                        <option value="1">Entradas</option>
+                        <option value="2">Pratos Principais</option>
+                        <option value="3">Sobremesas</option>
+                        <option value="4">Bebidas</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="dificuldade">Dificuldade:</label>
+                    <select id="dificuldade">
+                        <option value="">Todas</option>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Médio">Médio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                </div>
+                <button id="btn-filtrar" class="btn">Filtrar</button>
+            </div>
+
+            <div class="receitas-grid" id="receitas-lista">
+                <!-- Aqui serão carregadas dinamicamente as receitas -->
+                <div class="loading">Carregando receitas...</div>
+            </div>
+            
+            <div class="adicionar-receita">
+                <h3>Tem uma receita para compartilhar?</h3>
+                <a href="nova-receita.html" class="btn btn-primary">Adicionar Nova Receita</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Receitas Fáceis. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html> 

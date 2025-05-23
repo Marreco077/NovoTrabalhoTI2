@@ -1,6 +1,7 @@
 package com.receitasfaceis.model;
 
 import java.time.LocalDateTime;
+import com.google.gson.annotations.Expose;
 
 /**
  * Classe que representa um usuário no sistema.
@@ -10,7 +11,12 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    
+    // Utilizamos @Expose(serialize = false) para evitar problemas de serialização com Gson
+    @Expose(serialize = false)
     private LocalDateTime dataCriacao;
+    
+    @Expose(serialize = false)
     private LocalDateTime ultimoAcesso;
 
     // Construtores

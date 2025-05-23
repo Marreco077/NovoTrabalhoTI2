@@ -1,9 +1,12 @@
 // Configurações da API
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8081/api';
+
+// Variável global para armazenar informações do usuário
+window.usuarioLogado = null;
 
 // Carregamento inicial
 document.addEventListener('DOMContentLoaded', () => {
-    // Verifica se o usuário está logado
+    // Verifica se o usuário está logado (recuperando do localStorage)
     verificarAutenticacao();
     
     // Carrega as receitas em destaque na página inicial
@@ -20,39 +23,64 @@ function verificarAutenticacao() {
     
     if (loginBtn) {
         if (usuario) {
-            loginBtn.textContent = 'Minha Conta';
+            // Mostra o nome do usuário em vez de "Login"
+            loginBtn.textContent = usuario.nome;
             loginBtn.href = 'perfil.html';
             
             // Adicionar botão de logout ao menu
             const nav = document.querySelector('nav ul');
-            const logoutItem = document.createElement('li');
-            const logoutLink = document.createElement('a');
-            logoutLink.href = '#';
-            logoutLink.textContent = 'Sair';
-            logoutLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                logout();
-            });
-            logoutItem.appendChild(logoutLink);
-            nav.appendChild(logoutItem);
+            // Verificar se o botão de logout já existe para não duplicar
+            const existingLogout = nav.querySelector('.logout-item');
+            if (!existingLogout) {
+                const logoutItem = document.createElement('li');
+                logoutItem.className = 'logout-item';
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '#';
+                logoutLink.textContent = 'Sair';
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    logout();
+                });
+                logoutItem.appendChild(logoutLink);
+                nav.appendChild(logoutItem);
+            }
         } else {
             loginBtn.textContent = 'Login';
             loginBtn.href = 'login.html';
+            
+            // Remover botão de logout se existir
+            const logoutItem = document.querySelector('.logout-item');
+            if (logoutItem) {
+                logoutItem.remove();
+            }
         }
     }
 }
 
 function getUsuarioLogado() {
-    const usuarioJson = localStorage.getItem('usuario');
-    return usuarioJson ? JSON.parse(usuarioJson) : null;
+    // Tenta obter do localStorage
+    try {
+        const usuarioJSON = localStorage.getItem('usuarioLogado');
+        if (usuarioJSON) {
+            return JSON.parse(usuarioJSON);
+        }
+    } catch (e) {
+        console.error("Erro ao obter usuário do localStorage:", e);
+    }
+    return null;
 }
 
 function setUsuarioLogado(usuario) {
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    if (usuario) {
+        localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+        console.log("Usuário armazenado no localStorage:", usuario);
+    } else {
+        localStorage.removeItem('usuarioLogado');
+    }
 }
 
 function logout() {
-    localStorage.removeItem('usuario');
+    localStorage.removeItem('usuarioLogado');
     window.location.href = 'index.html';
 }
 
@@ -95,7 +123,7 @@ function criarCardReceita(receita) {
     const card = document.createElement('div');
     card.className = 'receita-card';
     card.addEventListener('click', () => {
-        window.location.href = `receita.html?id=${receita.id}`;
+        window.location.href = `receita-detalhes.html?id=${receita.id}`;
     });
     
     const img = document.createElement('img');
