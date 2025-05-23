@@ -20,16 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function verificarAutenticacao() {
     const usuario = getUsuarioLogado();
     const loginBtn = document.getElementById('loginBtn');
+    const cadastroNavItem = document.getElementById('cadastroNavItem'); 
     
-    if (loginBtn) {
+    if (loginBtn) { 
         if (usuario) {
-            // Mostra o nome do usuário em vez de "Login"
             loginBtn.textContent = usuario.nome;
             loginBtn.href = 'perfil.html';
             
-            // Adicionar botão de logout ao menu
+            if (cadastroNavItem) {
+                cadastroNavItem.style.display = 'none';
+            }
+
             const nav = document.querySelector('nav ul');
-            // Verificar se o botão de logout já existe para não duplicar
             const existingLogout = nav.querySelector('.logout-item');
             if (!existingLogout) {
                 const logoutItem = document.createElement('li');
@@ -48,11 +50,20 @@ function verificarAutenticacao() {
             loginBtn.textContent = 'Login';
             loginBtn.href = 'login.html';
             
-            // Remover botão de logout se existir
+            if (cadastroNavItem) {
+                cadastroNavItem.style.display = 'list-item'; // Ou o display original do <li>
+            }
+
             const logoutItem = document.querySelector('.logout-item');
             if (logoutItem) {
                 logoutItem.remove();
             }
+        }
+    } else {
+        // Se o loginBtn não existir na página, ainda assim garantir que o cadastroNavItem seja exibido
+        // (caso seja uma página que não tem o botão de login mas tem o de cadastro)
+        if (cadastroNavItem) {
+            cadastroNavItem.style.display = 'list-item';
         }
     }
 }
@@ -119,45 +130,71 @@ async function carregarReceitasDestaque() {
 }
 
 // Funções auxiliares para criar elementos HTML
-function criarCardReceita(receita) {
+function criarCardReceita(receita, contexto = 'default') {
     const card = document.createElement('div');
     card.className = 'receita-card';
-    card.addEventListener('click', () => {
-        window.location.href = `receita-detalhes.html?id=${receita.id}`;
-    });
-    
+    card.dataset.receitaId = receita.id;
+
+    // Event listener principal do card para ver detalhes
+    const linkDetalhes = document.createElement('a');
+    linkDetalhes.href = `receita-detalhes.html?id=${receita.id}`;
+    linkDetalhes.className = 'receita-card-link';
+
     const img = document.createElement('img');
     img.className = 'receita-img';
-    console.log("URL da Imagem (main.js):", receita.imagemUrl); 
     img.src = receita.imagemUrl || 'img/placeholder.jpg';
     img.alt = receita.titulo;
-    card.appendChild(img);
-    
+    linkDetalhes.appendChild(img);
+
     const info = document.createElement('div');
     info.className = 'receita-info';
-    
+
     const titulo = document.createElement('h3');
     titulo.textContent = receita.titulo;
     info.appendChild(titulo);
-    
+
     const desc = document.createElement('p');
     desc.textContent = receita.descricao ? truncateText(receita.descricao, 80) : 'Sem descrição disponível';
     info.appendChild(desc);
-    
+
     const meta = document.createElement('div');
     meta.className = 'receita-meta';
-    
+
     const tempo = document.createElement('span');
     tempo.innerHTML = `<i class="fa fa-clock-o"></i> ${receita.tempoPreparo} min`;
     meta.appendChild(tempo);
-    
+
     const dificuldade = document.createElement('span');
     dificuldade.textContent = receita.dificuldade;
     meta.appendChild(dificuldade);
-    
+
     info.appendChild(meta);
-    card.appendChild(info);
-    
+    linkDetalhes.appendChild(info);
+    card.appendChild(linkDetalhes);
+
+    // Se o contexto for 'perfil', adiciona botões de ação (Excluir, Editar)
+    if (contexto === 'perfil') {
+        const acoesDiv = document.createElement('div');
+        acoesDiv.className = 'receita-card-acoes';
+
+        // Botão Excluir
+        const btnExcluir = document.createElement('button');
+        btnExcluir.textContent = 'Excluir';
+        btnExcluir.className = 'btn btn-sm btn-danger btn-excluir-receita';
+        btnExcluir.dataset.receitaId = receita.id;
+        acoesDiv.appendChild(btnExcluir);
+
+        // Placeholder para Botão Editar (será implementado depois)
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Editar';
+        btnEditar.className = 'btn btn-sm btn-warning btn-editar-receita';
+        btnEditar.dataset.receitaId = receita.id;
+        btnEditar.style.marginLeft = '5px';
+        acoesDiv.appendChild(btnEditar);
+
+        card.appendChild(acoesDiv);
+    }
+
     return card;
 }
 

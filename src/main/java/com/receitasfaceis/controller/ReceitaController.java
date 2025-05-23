@@ -147,8 +147,40 @@ public class ReceitaController {
             Receita receitaAtualizada = Application.gson.fromJson(req.body(), Receita.class);
             receitaAtualizada.setId(id);
             
-            // Manter o usuário original da receita
+            // Manter o usuário original da receita e data de criação
             receitaAtualizada.setUsuarioId(receitaAtual.getUsuarioId());
+            receitaAtualizada.setDataCriacao(receitaAtual.getDataCriacao());
+
+            // Processamento dos ingredientes (similar ao criarReceita)
+            if (receitaAtualizada.getIngredientes() != null && !receitaAtualizada.getIngredientes().isEmpty()) {
+                List<Ingrediente> ingredientesProcessados = new ArrayList<>();
+                for (Ingrediente ingredienteJson : receitaAtualizada.getIngredientes()) {
+                    if (ingredienteJson.getNome() == null || ingredienteJson.getNome().trim().isEmpty()) {
+                        // Pular ingredientes com nome vazio, se houver algum enviado erroneamente
+                        continue;
+                    }
+                    Ingrediente ingredienteExistente = ingredienteDAO.buscarPorNome(ingredienteJson.getNome().trim());
+                    
+                    if (ingredienteExistente != null) {
+                        // Usa o ingrediente existente, mas atualiza quantidade e observação (se houver)
+                        ingredienteExistente.setQuantidade(ingredienteJson.getQuantidade());
+                        ingredienteExistente.setObservacao(ingredienteJson.getObservacao());
+                        ingredientesProcessados.add(ingredienteExistente);
+                    } else {
+                        // Cria um novo ingrediente no banco de dados
+                        // Garante que a quantidade e observação sejam transferidas
+                        Ingrediente novoParaInserir = new Ingrediente(0, ingredienteJson.getNome().trim());
+                        novoParaInserir.setQuantidade(ingredienteJson.getQuantidade());
+                        novoParaInserir.setObservacao(ingredienteJson.getObservacao());
+                        Ingrediente novoIngredienteDB = ingredienteDAO.inserir(novoParaInserir);
+                        ingredientesProcessados.add(novoIngredienteDB);
+                    }
+                }
+                receitaAtualizada.setIngredientes(ingredientesProcessados);
+            } else {
+                 // Se a lista de ingredientes estiver vazia ou nula, define como uma lista vazia
+                receitaAtualizada.setIngredientes(new ArrayList<>());
+            }
             
             if (receitaDAO.atualizar(receitaAtualizada)) {
                 return Application.gson.toJson(receitaAtualizada);
