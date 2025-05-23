@@ -147,4 +147,74 @@ O projeto contém as seguintes páginas:
 - Implementar categorias para receitas
 - Adicionar sistema de avaliação
 - Melhorar o sistema de busca com filtros adicionais
-- Adicionar upload de imagens para receitas 
+- Adicionar upload de imagens para receitas
+
+# Projeto Receitas Fáceis - Frontend
+
+Este projeto é a interface de usuário (frontend) para uma plataforma de compartilhamento de receitas culinárias. Ele foi desenvolvido com foco em HTML, CSS e JavaScript puros, buscando uma experiência de usuário moderna e responsiva.
+
+## Funcionalidades Principais
+
+*   **Visualização de Receitas:**
+    *   Página inicial com receitas em destaque.
+    *   Página de listagem de todas as receitas com filtros por categoria e dificuldade.
+    *   Página de detalhes para cada receita, exibindo ingredientes, modo de preparo, tempo, porções, dificuldade e autor.
+*   **Busca de Receitas:** Funcionalidade de busca por termo e filtros combinados.
+*   **Gerenciamento de Usuários (Simulado/Frontend):**
+    *   Cadastro de novos usuários.
+    *   Login de usuários existentes.
+    *   Persistência do status de login via `localStorage`.
+*   **Gerenciamento de Receitas (para usuários logados):**
+    *   Criação de novas receitas através de um formulário detalhado.
+    *   Edição de receitas existentes.
+    *   Exclusão de receitas cadastradas pelo usuário.
+    *   Página de perfil do usuário exibindo suas receitas cadastradas.
+*   **Interface Moderna:**
+    *   Design responsivo.
+    *   Temas claro (Latte) e escuro (Mocha) com seletor de alternância e persistência da preferência.
+    *   Variáveis CSS para fácil customização do tema.
+
+## Tecnologias Utilizadas
+
+*   HTML5
+*   CSS3 (com variáveis CSS para theming)
+*   JavaScript (Vanilla JS, ES6+)
+
+## Estrutura do Projeto (Frontend)
+
+*   **`/` (raiz):**
+    *   `index.html`: Página inicial.
+    *   `receitas.html`: Página de listagem de todas as receitas.
+    *   `receita-detalhes.html`: Página para visualização detalhada de uma receita.
+    *   `busca.html`: Página de busca de receitas.
+    *   `nova-receita.html`: Formulário para cadastro e edição de receitas.
+    *   `login.html`: Página de login.
+    *   `cadastro.html`: Página de cadastro de usuários.
+    *   `perfil.html`: Página de perfil do usuário.
+    *   `README.md`: Este arquivo.
+*   **`css/`**
+    *   `styles.css`: Folha de estilos principal.
+*   **`js/`**
+    *   `main.js`: Script principal com funções globais (autenticação, criação de cards, etc.).
+    *   `index.js`: Lógica específica para a `index.html`.
+    *   `receitas.js`: Lógica para a `receitas.html` (carregamento, filtros).
+    *   `receita-detalhes.js`: Lógica para a `receita-detalhes.html`.
+    *   `busca.js`: Lógica para a `busca.html`.
+    *   `nova-receita.js`: Lógica para o formulário de `nova-receita.html`.
+    *   `login.js`: Lógica para a `login.html`.
+    *   `cadastro.js`: Lógica para a `cadastro.html`.
+    *   `perfil.js`: Lógica para a `perfil.html`.
+    *   `theme-toggle.js`: Script para alternância de tema.
+*   **`img/`**
+    *   Imagens de placeholder ou ícones utilizados.
+
+## Como Executar (Frontend)
+
+1.  Certifique-se de que o backend Java correspondente esteja em execução (por padrão, na porta 8081, conforme configurado nos scripts JS).
+2.  Abra qualquer um dos arquivos `.html` diretamente em um navegador web.
+    *   Recomenda-se começar pelo `index.html`.
+
+## Considerações
+
+*   A comunicação com o backend é feita através de uma API REST (endereço base `http://localhost:8081/api` nos scripts).
+*   A autenticação é simulada no frontend e gerenciada via `localStorage`. Para um ambiente de produção, um sistema de autenticação robusto no backend seria necessário. 

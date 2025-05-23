@@ -489,6 +489,5 @@ footer a:hover {
 #btn-filtrar,
 #btn-buscar-filtrar {
     padding: 10px 20px; /* Garantir o padding */
-    margin-top: 10px;
-    padding-bottom: 20px; 
+    margin-top: 10px; /* Adicionar um pouco de espaço acima se estiverem muito colados aos selects */
 } 
